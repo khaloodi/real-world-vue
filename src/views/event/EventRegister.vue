@@ -15,6 +15,7 @@
       >
     </div> -->
   <p>Register for the event here</p>
+  <button @click="register">Register Me</button>
   <!-- </div> -->
 </template>
 
@@ -23,6 +24,18 @@
 
 export default {
   props: ["event"],
+  methods: {
+    register() {
+      //call to api
+      // if registered then redirect to event details
+
+      // programmatic navigation
+      this.$router.push({
+        name: "EventDetails",
+        params: { id: this.event.id },
+      });
+    },
+  },
   // props: ["id"], // receive the id prop, use this to get event information from the api
   // data() {
   //   return {
