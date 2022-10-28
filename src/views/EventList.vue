@@ -55,7 +55,7 @@ export default {
   computed: {
     hasNextPage() {
       var totalPages = Math.ceil(this.totalEvents / 2);
-      return this.page < totalPages;
+      return this.page < totalPages; // returns whether or not this page is in fact the last page
     },
   },
 };
