@@ -10,6 +10,7 @@ import EventService from "@/services/EventService.js";
 // import axios from 'axios'
 export default {
   name: "EventList",
+  props: ["page"],
   components: {
     EventCard,
   },
@@ -19,7 +20,7 @@ export default {
     };
   },
   created() {
-    EventService.getEvents()
+    EventService.getEvents(2, this.page)
       // .get(
       //   'https://my-json-server.typicode.com/Code-Pop/Real-World_Vue-3/events'
       // )
