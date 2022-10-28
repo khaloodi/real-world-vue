@@ -14,7 +14,7 @@ const routes = [
     props: (route) => ({ page: parseInt(route.query.page) || 1 }),
   },
   {
-    path: "/event/:id",
+    path: "/events/:id",
     name: "EventLayout",
     props: true,
     component: EventLayout,
@@ -55,6 +55,19 @@ const routes = [
   //   props: true,
   //   component: EventEditVue,
   // },
+  {
+    path: "/event/:id",
+    // redirect: (to) => {
+    //   return { name: "EventDetails", params: { id: to.params.id } }; // pass the id through in redirect
+    // }, refactor -->
+    redirect: () => {
+      return { name: "EventDetails" }; // don't need to pass in id b/c same parameter name
+    },
+    children: [
+      { path: "register", redirect: () => ({ name: "EventRegister" }) },
+      { path: "edit", redirect: () => ({ name: "EventEdit" }) },
+    ],
+  },
   {
     path: "/about",
     name: "About",
