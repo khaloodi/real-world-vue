@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EventList from "../views/EventList.vue";
 import AboutView from "../views/AboutView.vue";
+import EventCreate from "@/views/EventCreate.vue";
 import EventLayout from "@/views/event/EventLayout.vue";
 import EventDetails from "@/views/event/EventDetails.vue";
 import EventRegister from "@/views/event/EventRegister.vue";
@@ -91,6 +92,11 @@ const routes = [
       { path: "register", redirect: () => ({ name: "EventRegister" }) },
       { path: "edit", redirect: () => ({ name: "EventEdit" }) },
     ],
+  },
+  {
+    path: "/event/create",
+    name: "EventCreate",
+    component: EventCreate,
   },
   {
     path: "/about",
