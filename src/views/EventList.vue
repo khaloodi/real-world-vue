@@ -26,7 +26,7 @@
 <script>
 import EventCard from "@/components/EventCard.vue";
 import EventService from "@/services/EventService.js";
-import { watchEffect } from "vue";
+// import { watchEffect } from "vue";
 export default {
   name: "EventList",
   props: ["page"],
@@ -39,19 +39,30 @@ export default {
       totalEvents: 0,
     };
   },
-  created() {
-    watchEffect(() => {
-      this.events = null;
-      EventService.getEvents(2, this.page)
-        .then((response) => {
-          this.events = response.data;
-          this.totalEvents = response.headers["x-total-count"];
-        })
-        .catch(() => {
-          // console.log(error);
-          this.$router.push({ name: "NetworkError" });
+  beforeRouteEnter(routeTo, routeFrom, next) {
+    // created() {
+    // watchEffect(() => {
+    // this.events = null;
+    // EventService.getEvents(2, this.page)
+    EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
+      .then((response) => {
+        //comp says continue routing and once component is loaded,
+        //set these values (totalEvent, and Events)
+        // note they use vm instead of comp inside of documentation
+        // vm stands for view model
+        next((comp) => {
+          comp.totalEvents = response.headers["x-total-count"];
+          comp.events = response.data;
         });
-    });
+        // this.events = response.data;
+        // this.totalEvents = response.headers["x-total-count"];
+      })
+      .catch(() => {
+        // console.log(error);
+        // this.$router.push({ name: "NetworkError" });
+        next({ name: "NetworkError" }); //if the api fails, load the network error page
+      });
+    // });
   },
   computed: {
     hasNextPage() {
