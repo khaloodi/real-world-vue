@@ -27,7 +27,7 @@
 import EventCard from "@/components/EventCard.vue";
 import EventService from "@/services/EventService.js";
 // import { watchEffect } from "vue";
-import NProgress from "nprogress";
+// import NProgress from "nprogress";
 export default {
   name: "EventList",
   props: ["page"],
@@ -41,7 +41,7 @@ export default {
     };
   },
   beforeRouteEnter(routeTo, routeFrom, next) {
-    NProgress.start();
+    // NProgress.start();
     // created() {
     // watchEffect(() => {
     // this.events = null;
@@ -63,25 +63,25 @@ export default {
         // console.log(error);
         // this.$router.push({ name: "NetworkError" });
         next({ name: "NetworkError" }); //if the api fails, load the network error page
-      })
-      .finally(() => {
-        NProgress.done(); //ensures whether or not the api succeeds or fails, finish the progress bar
       });
+    // .finally(() => {
+    //   NProgress.done(); //ensures whether or not the api succeeds or fails, finish the progress bar
+    // });
     // });
   },
   beforeRouteUpdate(routeTo) {
-    NProgress.start();
-    EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
+    // NProgress.start();
+    return EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         this.totalEvents = response.headers["x-total-count"];
         this.events = response.data;
       })
       .catch(() => {
         return { name: "NetworkError" }; //if the api fails, load the network error page
-      })
-      .finally(() => {
-        NProgress.done(); //ensures whether or not the api succeeds or fails, finish the progress bar
       });
+    // .finally(() => {
+    //   NProgress.done(); //ensures whether or not the api succeeds or fails, finish the progress bar
+    // });
   },
   computed: {
     hasNextPage() {

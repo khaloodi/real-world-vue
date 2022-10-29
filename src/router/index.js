@@ -7,6 +7,9 @@ import EventRegister from "@/views/event/EventRegister.vue";
 import EventEdit from "@/views/event/EventEdit.vue";
 import NotFound from "@/views/NotFound.vue";
 import NetworkError from "@/views/NetworkError.vue";
+import NProgress from "nprogress";
+import EventService from "@/services/EventService";
+import GStore from "@/store";
 
 const routes = [
   {
@@ -20,6 +23,25 @@ const routes = [
     name: "EventLayout",
     props: true,
     component: EventLayout,
+    beforeEnter: (to) => {
+      // fetch event (by id) and set local data
+      return EventService.getEvent(to.params.id) // getting event information from api, via the eventService
+        .then((response) => {
+          // this.event = response.data;
+          GStore.event = response.data;
+        })
+        .catch((error) => {
+          // console.log(error);
+          if (error.response && error.response.status == 404) {
+            return {
+              name: "404Resource",
+              params: { resource: "event" },
+            };
+          } else {
+            return { name: "NetworkError" };
+          }
+        });
+    },
     children: [
       // <-----
       {
@@ -97,6 +119,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach(() => {
+  NProgress.start(); //start the progress bar before navigation
+});
+
+router.afterEach(() => {
+  NProgress.done(); //finish the progress bar after navigation
 });
 
 export default router;
