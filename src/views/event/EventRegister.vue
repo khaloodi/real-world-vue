@@ -24,10 +24,18 @@
 
 export default {
   props: ["event"],
+  inject: ["GStore"],
   methods: {
     register() {
       //call to api
       // if registered then redirect to event details
+
+      this.GStore.flashMessage =
+        "You are successfully registered for " + this.event.title;
+      //reset flash message after 3 seconds
+      setTimeout(() => {
+        this.GStore.flashMessage = "";
+      }, 3000);
 
       // programmatic navigation
       this.$router.push({
